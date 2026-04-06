@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Patient {
+  id               String          @id @default(uuid())
+  fullName         String
+  age              Int
+  gender           String
+  contact          String
+  address          String
+  bloodGroup       String?
+  heightCm         Float?
+  weightKg         Float?
+  pastDiseases     String?
+  allergies        String?
+  chronicIllnesses String?
+  familyHistory    String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  triageSessions   TriageSession[]
+}
+
+model TriageSession {
+  id              String         @id @default(uuid())
+  patientId       String
+  patient         Patient        @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  symptoms        String
+  durationDays    Int
+  notes           String?
+  
+  status          String         @default("PENDING") // PENDING, TRIAGED, CONCLUDED
+  createdAt       DateTime       @default(now())
+
+  triageResult    TriageResult?
+}
+
+model TriageResult {
+  id              String        @id @default(uuid())
+  sessionId       String        @unique
+  session         TriageSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  priorityLevel   String        // EMERGENCY, MODERATE, ROUTINE
+  summary         String        // AI generated concise summary
+  riskFactors     String        // Comma separated list
+  recommendedSpec String?       // Recommended Doctor Specialization
+
+  createdAt       DateTime      @default(now())
+}
