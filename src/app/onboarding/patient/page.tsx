@@ -56,7 +56,10 @@ export default function PatientOnboarding() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),
         });
-        if (res.ok) router.push("/dashboard/patient");
+        if (res.ok) {
+          const data = await res.json();
+          router.push(`/dashboard/patient?sessionId=${data.triageSession.id}`);
+        }
       } catch (error) {
         console.error(error);
       } finally {

@@ -7,12 +7,17 @@ const PRIORITY_WEIGHTS: Record<string, number> = {
   "ROUTINE": 3,
 };
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    // 1. Fetch pending triage sessions along with Patient and TriageResult data
+    // 1. Check for specific doctorId scope
+    const { searchParams } = new URL(req.url);
+    const doctorId = searchParams.get("doctorId");
+
+    // 2. Query pending database sessions mapped to this doctor
     const sessions = await db.triageSession.findMany({
       where: {
         status: "PENDING",
+        ...(doctorId ? { doctorId } : {})
       },
       include: {
         patient: true,

@@ -53,6 +53,7 @@ export async function POST(req: Request) {
         summary: aiOutput.summary,
         riskFactors: aiOutput.riskFactors,
         recommendedSpec: aiOutput.recommendedSpec || null,
+        careSuggestions: aiOutput.careSuggestions,
       }
     });
 

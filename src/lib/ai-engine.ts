@@ -14,6 +14,7 @@ export type TriageOutput = {
   summary: string;
   riskFactors: string;
   recommendedSpec: string;
+  careSuggestions: string;
 };
 
 export async function processTriageData(input: TriageInput): Promise<TriageOutput> {
@@ -29,7 +30,8 @@ export async function processTriageData(input: TriageInput): Promise<TriageOutpu
       priorityLevel: "EMERGENCY",
       summary: "Patient reports severe distress indicating potential cardiac or acute respiratory involvement.",
       riskFactors: "Myocardial Infarction, Acute Respiratory Failure",
-      recommendedSpec: "Cardiology / ER"
+      recommendedSpec: "Cardiology / ER",
+      careSuggestions: "Seek immediate emergency assistance. Do not drive yourself to the hospital. Sit down and rest quietly while help is on the way."
     };
   }
 
@@ -38,7 +40,8 @@ export async function processTriageData(input: TriageInput): Promise<TriageOutpu
       priorityLevel: "MODERATE",
       summary: `Patient presents with ${input.symptoms} lasting ${input.durationDays} days. Moderate risk due to symptom duration or history.`,
       riskFactors: "Secondary infection, Dehydration",
-      recommendedSpec: "Internal Medicine"
+      recommendedSpec: "Internal Medicine",
+      careSuggestions: "Stay heavily hydrated. Monitor temperature every 4 hours. Take adequate rest and avoid heavy physical exertion until consultation."
     };
   }
 
@@ -46,6 +49,7 @@ export async function processTriageData(input: TriageInput): Promise<TriageOutpu
     priorityLevel: "ROUTINE",
     summary: `Patient reports mild symptoms (${input.symptoms}). Vital stats check out.`,
     riskFactors: "None detected",
-    recommendedSpec: "General Practice"
+    recommendedSpec: "General Practice",
+    careSuggestions: "Continue normal daily activities. Keep a mild symptom log if any new issues arise before your routine checkup."
   };
 }
